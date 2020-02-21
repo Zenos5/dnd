@@ -72,10 +72,30 @@ img {
   background-color: #F0FFFF
 }
 
+#submit {
+  width: 40%;
+  display: block;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#result {
+  width: 100%;
+  display: block;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  overflow: auto;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
   .content {
     margin-bottom: 55px;
   }
 }
-
