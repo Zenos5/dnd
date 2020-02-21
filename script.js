@@ -1,26 +1,26 @@
-function onClick(e) {
-  e.preventDefault();
+var baseURL = "https://sv443.net/jokeapi/v2";
+var categories = [ "Miscellaneous"];
+var params = [
+    "blacklistFlags=nsfw,religious,racist",
+    "type=single"
+];
 
-  // setup URL
-  let url = "https://sv443.net/jokeapi/v2/joke/Miscellaneous?type=single&?blacklistFlags=nsfw,racist,sexist";
-  // call API
-  fetch(url)
-    .then(function(response) {
-      // make sure the request was successful
-      if (response.status != 200) {
-        return {
-          text: "Error calling the Numbers API service: " + response.statusText
-        }
-      }
-      return response.json();
-    }).then(function(json) {
-      // update DOM with response
-      updateResult(json.text);
-    });
-}
+var xhr = new XMLHttpRequest();
+xhr.open("GET", baseURL + "/joke/" + categories + "?" + params.join("&"));
 
-function updateResult(info) {
-  document.getElementById('result').textContent = info;
-}
+xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status < 300) // readyState 4 means request has finished + we only want to parse the joke if the request was successful (status code lower than 300)
+    {
+        var randomJoke = JSON.parse(xhr.responseText);
 
-document.getElementById('submit').addEventListener('click', onClick);
+        // If type == "single", the joke only has the "joke" property
+        var output = "<p>" + randomJoke.joke + "</p>";
+        document.getElementById("result").innerHTML = output;
+    }
+    else if(xhr.readyState == 4)
+    {
+        alert("Error while requesting joke.\n\nStatus code: " + xhr.status + "\nServer response: " + xhr.responseText);
+    }
+};
+
+xhr.send();
